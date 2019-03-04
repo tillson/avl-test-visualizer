@@ -1,0 +1,48 @@
+body {
+  padding-top: 100px;
+  font-family: 'PT Mono', monospace;
+  background-color: #212121;
+}
+@media (max-width: 979px) {
+  body {
+    padding-top: 0px;
+  }
+}
+
+.actualTree {
+  margin-top: 300px;
+}
+
+.error {
+  color: #c1272d;
+}
+
+/* .avl-row {
+  margin-top: 30px;
+} */
+h6 {
+  margin-bottom: -30px;
+  padding-top: 30px;
+}
+
+
+.avl-container {
+  width: 85%;
+  margin-left: 7.5%;
+}
+
+
+.svg-container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%; /* aspect ratio */
+  vertical-align: top;
+  overflow: hidden;
+}
+.svg-content-responsive {
+  display: inline-block;
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
