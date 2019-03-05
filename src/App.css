@@ -3,11 +3,6 @@ body {
   font-family: 'PT Mono', monospace;
   background-color: #212121;
 }
-@media (max-width: 979px) {
-  body {
-    padding-top: 0px;
-  }
-}
 
 .actualTree {
   margin-top: 300px;
