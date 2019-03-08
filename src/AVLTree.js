@@ -21,7 +21,8 @@ class AVLTree extends React.Component {
                 <br />
                 {/* Width: {this.state.maxWidth} */}
                 <br />
-                <svg className={"avl-svg-" + this.state.name} width={this.props.width} height={this.props.height}>
+
+                <svg className={"avl-svg-" + this.state.name + " svg-content-responsive"} preserveAspectRatio="xMinYMin meet" viewBox="0 0 600 400">
                 </svg>
             </div>
         )
