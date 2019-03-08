@@ -27,7 +27,7 @@ class AVLWidget extends React.Component {
                                 `
 public void printTestURL(String testId, AVLNode<Integer> rootNode) {
     HashSet<Integer> occurrenceSet = new HashSet<>();
-    String queryString = "1.1:0:" + getStringifiedTree(rootNode, occurrenceSet);
+    String queryString = "1.2:0:" + getStringifiedTree(rootNode, occurrenceSet);
     String b64QueryString = Base64.getEncoder().encodeToString(queryString.getBytes());
     System.out.println("=================");
     System.out.println("View your tree at: ");
@@ -61,9 +61,9 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
         }
         return (
             <div className="avl-widget">
-                { this.state.data.version < 1.1 &&
+                { this.state.data.version < 1.2 &&
                             <Alert type="primary" text={
-                                ["A new version of AVLTestsTG has been released (1.1). You can download them from ",
+                                ["A new version of AVLTestsTG has been released (1.2). You can download them from ",
                                 <a href='https://github.gatech.edu/gist/tgalloway7/68db1a275ed8899469a2b055e4b96247'>the Georgia Tech GitHub.</a>]}>
                             </Alert>
                 }
@@ -101,6 +101,7 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
             if (passedData) {
                 dataObj.successfulTestData = this.getSuccessfulTestData(dataObj)
             }
+            console.log(dataObj);
             return dataObj;
         } else {
             return null;
@@ -159,12 +160,9 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
         if (childData.substr(splitIndex).length > 1) {
             rightChildString = childData.substr(splitIndex + 1);
         }
-        if (leftChildString != '') {
-            node.children.push(this.recursiveBuildNode(leftChildString));
-        }
-        if (rightChildString != '') {
-            node.children.push(this.recursiveBuildNode(rightChildString));
-        }
+        node.children.push(this.recursiveBuildNode(leftChildString));
+        node.children.push(this.recursiveBuildNode(rightChildString));
+
         if (node.children.length == 0) {
             node.children = null;
         }

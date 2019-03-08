@@ -60,7 +60,7 @@ class AVLTree extends React.Component {
         var data = this.state.treeObject;
         var root = d3.hierarchy(data)
         var treeLayout = d3.tree();
-        treeLayout.size([this.props.width, this.props.height]);
+        treeLayout.size([this.props.width, this.props.height / 1.5]);
         treeLayout(root);
         this.setState({ d3tree: treeLayout, width: this.props.width, height: this.props.height });
 
@@ -69,14 +69,31 @@ class AVLTree extends React.Component {
             .attr("viewBox", "0 0 " + this.props.width + "," + this.props.height)
         //class to make it responsive
         // .classed("svg-content-responsive", true);
-        svg.append("rect")
-            .attr("width", this.props.width)
-            .attr("height", this.props.width)
-            .attr("fill", "#212121");
+        // svg.append("rect")
+        //     .attr("width", this.props.width)
+        //     .attr("height", this.props.width)
+        //     .attr("fill", "#212121");
         this.setState({ svg: svg });
+
+        var line = d3.line()
+            .x(function(d) {
+                return d.x;
+            })
+            .y(function(d) {
+                return d.y + 70;
+            });
+        var link = svg.selectAll("path.link")
+            .data(root.links());
+
+        // Enter the links.
+        link.enter().insert("path", "g")
+            .attr("class", "link")
+            .attr("d", function(d) { return d.target.data.name != '' ? line([d.source, d.target]) : undefined; });
+
+
         // Nodes
         var nodeEnter = svg
-            .selectAll('circle.node')
+            .selectAll('.node')
             .data(root.descendants())
             .enter();
         nodeEnter.append('circle')
@@ -84,7 +101,7 @@ class AVLTree extends React.Component {
             .style("fill", function (d) { return (d.data.name.indexOf('*') == 0 ? '#c1272d' : '#1f77b4'); })
             .attr('cx', function (d) { return d ? d.x : 0; })
             .attr('cy', function (d) { return d ? d.y + 70 : 0; })
-            .attr('r', function (d) { return d.data.name ? 50 : 0 })
+            .attr('r', function (d) { return d.data.name ? 40 : 0 })
         nodeEnter.append("text")
             .attr('y', function (d) { return d ? d.y + 70 : 0; })
             .attr('x', function (d) { return d ? d.x : 0; })
@@ -97,7 +114,6 @@ class AVLTree extends React.Component {
 
         // Height
         nodeEnter.append('circle')
-            .classed('node', true)
             .style("fill", function (d) { return '#fff'; })
             .attr('cy', function (d) { return d ? d.y + 25 : 0; })
             .attr('cx', function (d) { return d ? d.x + 25 : 0; })
@@ -113,7 +129,6 @@ class AVLTree extends React.Component {
 
         // Balance Factor
         nodeEnter.append('circle')
-            .classed('node', true)
             .style("fill", function (d) { return '#fff'; })
             .attr('cy', function (d) { return d ? d.y + 25 : 0; })
             .attr('cx', function (d) { return d ? d.x - 25 : 0; })
@@ -127,28 +142,6 @@ class AVLTree extends React.Component {
             .text(function (d) { return d ? d.data.bf : ''; })
             .style("fill-opacity", 1);
 
-
-
-        // Declare the links…
-        var link = svg.selectAll("path.link")
-            .data(root.links(), function (d) { return d.target.id; });
-
-        var diagonal = d3.linkHorizontal()
-            .x(function (d) { return d.x })
-            .y(function (d) { return d.y + 30 })
-
-        // .projection(function (d) { return [d.x, d.y]; });
-
-        link.enter().insert("path", "g")
-            // .style('visibility', function (d) { return d.data ? 'visible' : 'hidden'; })
-            .append("line")
-            .attr("class", "link")
-            .attr("x1", function (d) { return d.source.x; })
-            .attr("y1", function (d) { return d.source.y + 30; })
-            .attr("x2", function (d) { return d.target.x; })
-            .attr("y2", function (d) { return d.target.y + 30; })
-            .style("fill-opacity", 1)
-            .style('fill', 'black');
 
 
     }
