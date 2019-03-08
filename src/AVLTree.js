@@ -57,9 +57,7 @@ class AVLTree extends React.Component {
 
 
     drawTree() {
-        console.log('drawing');
         var data = this.state.treeObject;
-        console.log(data);
         var root = d3.hierarchy(data)
         var treeLayout = d3.tree();
         treeLayout.size([this.props.width, this.props.height]);

@@ -2,6 +2,7 @@ import React from 'react';
 import AVLTree from './AVLTree.js'
 import successfulTestDataStore from './data.json';
 import { timingSafeEqual } from 'crypto';
+import Alert from './Alert.js';
 
 class AVLWidget extends React.Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class AVLWidget extends React.Component {
                                 `
 public void printTestURL(String testId, AVLNode<Integer> rootNode) {
     HashSet<Integer> occurrenceSet = new HashSet<>();
-    String queryString = "1.0:0:" + getStringifiedTree(rootNode, occurrenceSet);
+    String queryString = "1.1:0:" + getStringifiedTree(rootNode, occurrenceSet);
     String b64QueryString = Base64.getEncoder().encodeToString(queryString.getBytes());
     System.out.println("=================");
     System.out.println("View your tree at: ");
@@ -60,6 +61,12 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
         }
         return (
             <div className="avl-widget">
+                { this.state.data.version < 1.1 &&
+                            <Alert type="primary" text={
+                                ["A new version of AVLTestsTG has been released (1.1). You can download them from ",
+                                <a href='https://github.gatech.edu/gist/tgalloway7/68db1a275ed8899469a2b055e4b96247'>the Georgia Tech GitHub.</a>]}>
+                            </Alert>
+                }
                 <h4 className="error">Failed: Test {this.state.data.testId} - { this.state.data.successfulTestData ? this.state.data.successfulTestData.desc : ''}</h4>
                 <div className="row avl-row">
                 <div className="col-md-6">
@@ -84,7 +91,6 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
             const dataString = atob(endInformation.substr(7));
             const dataArray = dataString.split(':');
             const treeString = dataArray[2];
-            console.log(treeString);
             const treeObject = this.recursiveBuildNode(treeString);
             var dataObj = {
                 version: parseFloat(dataArray[0]),
@@ -148,17 +154,17 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
                 }
                 index++;
             }
-            if (index > 100) {
-                console.log(5);
-                return;
-            }
             splitIndex = index;
         }
         if (childData.substr(splitIndex).length > 1) {
             rightChildString = childData.substr(splitIndex + 1);
         }
-        node.children.push(this.recursiveBuildNode(leftChildString));
-        node.children.push(this.recursiveBuildNode(rightChildString));
+        if (leftChildString != '') {
+            node.children.push(this.recursiveBuildNode(leftChildString));
+        }
+        if (rightChildString != '') {
+            node.children.push(this.recursiveBuildNode(rightChildString));
+        }
         if (node.children.length == 0) {
             node.children = null;
         }
