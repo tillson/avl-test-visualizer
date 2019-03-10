@@ -68,13 +68,8 @@ class AVLTree extends React.Component {
         const svg = d3.select('.avl-svg-' + this.state.name)
             .attr("preserveAspectRatio", "xMinYMin meet")
             .attr("viewBox", "0 0 " + this.props.width + "," + this.props.height)
-        //class to make it responsive
-        // .classed("svg-content-responsive", true);
-        // svg.append("rect")
-        //     .attr("width", this.props.width)
-        //     .attr("height", this.props.width)
-        //     .attr("fill", "#212121");
         this.setState({ svg: svg });
+
 
         var line = d3.line()
             .x(function(d) {
@@ -97,12 +92,22 @@ class AVLTree extends React.Component {
             .selectAll('.node')
             .data(root.descendants())
             .enter();
+
+
+        var circleScaled = 1;
+        var offset = 0;
+        if (root.links().length > 20) {
+            circleScaled -= (0.01)*root.links().length;
+            offset = 0.7 * root.links().length;
+        }
+
+
         nodeEnter.append('circle')
             .classed('node', true)
             .style("fill", function (d) { return (d.data.name.indexOf('*') == 0 ? '#c1272d' : '#1f77b4'); })
             .attr('cx', function (d) { return d ? d.x : 0; })
             .attr('cy', function (d) { return d ? d.y + 70 : 0; })
-            .attr('r', function (d) { return d.data.name ? 40 : 0 })
+            .attr('r', function (d) { return d.data.name ? 40 * circleScaled : 0 })
         nodeEnter.append("text")
             .attr('y', function (d) { return d ? d.y + 70 : 0; })
             .attr('x', function (d) { return d ? d.x : 0; })
@@ -111,16 +116,16 @@ class AVLTree extends React.Component {
             .attr("text-anchor", "middle")
             .text(function (d) { return d ? d.data.name : ''; })
             .style("fill-opacity", 1)
-            .style('font-size', '34px');
+            .style('font-size', (34 * circleScaled) + 'px');
 
         // Height
         nodeEnter.append('circle')
             .style("fill", function (d) { return '#fff'; })
-            .attr('cy', function (d) { return d ? d.y + 25 : 0; })
+            .attr('cy', function (d) { return d ? d.y + 25 + offset: 0; })
             .attr('cx', function (d) { return d ? d.x + 25 : 0; })
-            .attr('r', function (d) { return d.data.height != null ? 15 : 0 })
+            .attr('r', function (d) { return d.data.height != null ? 15 * circleScaled : 0 })
         nodeEnter.append("text")
-            .attr('y', function (d) { return d ? d.y + 25 : 0; })
+            .attr('y', function (d) { return d ? d.y + 25 + offset : 0; })
             .attr('x', function (d) { return d ? d.x + 25 : 0; })
             .attr("dy", ".35em")
             .style('fill', '#000')
@@ -131,11 +136,11 @@ class AVLTree extends React.Component {
         // Balance Factor
         nodeEnter.append('circle')
             .style("fill", function (d) { return '#fff'; })
-            .attr('cy', function (d) { return d ? d.y + 25 : 0; })
+            .attr('cy', function (d) { return d ? d.y + 25 + offset : 0; })
             .attr('cx', function (d) { return d ? d.x - 25 : 0; })
-            .attr('r', function (d) { return d.data.bf != null ? 15 : 0 })
+            .attr('r', function (d) { return d.data.bf != null ? 15 * circleScaled : 0 })
         nodeEnter.append("text")
-            .attr('y', function (d) { return d ? d.y + 25 : 0; })
+            .attr('y', function (d) { return d ? d.y + 25 + offset : 0; })
             .attr('x', function (d) { return d ? d.x - 25 : 0; })
             .attr("dy", ".35em")
             .style('fill', '#000')
