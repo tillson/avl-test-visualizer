@@ -27,7 +27,7 @@ class AVLWidget extends React.Component {
                                 `
 public void printTestURL(String testId, AVLNode<Integer> rootNode) {
     HashSet<Integer> occurrenceSet = new HashSet<>();
-    String queryString = "1.3:0:" + getStringifiedTree(rootNode, occurrenceSet);
+    String queryString = "1.4:0:" + getStringifiedTree(rootNode, occurrenceSet);
     String b64QueryString = Base64.getEncoder().encodeToString(queryString.getBytes());
     System.out.println("=================");
     System.out.println("View your tree at: ");
@@ -61,9 +61,9 @@ public String getStringifiedTree(AVLNode<Integer> node, HashSet<Integer> occurre
         }
         return (
             <div className="avl-widget">
-                { this.state.data.version < 1.3 &&
+                { this.state.data.version < 1.4 &&
                             <Alert type="primary" text={
-                                ["A new version of AVLTestsTG has been released (1.3). You can download them from ",
+                                ["A new version of AVLTestsTG has been released (1.4). You can download them from ",
                                 <a href='https://github.gatech.edu/gist/tgalloway7/68db1a275ed8899469a2b055e4b96247'>the Georgia Tech GitHub.</a>]}>
                             </Alert>
                 }
